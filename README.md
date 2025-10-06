@@ -140,13 +140,6 @@ ng build
 - Angular Router
 - Angular Forms
 
-## Contributing
-
-1. Follow the coding standards in each project
-2. Write tests for new features
-3. Update documentation as needed
-4. Ensure both API and UI work together
-
 ## Support
 
 For technical details and implementation decisions, see the comprehensive [Code Review Summary](CODE_REVIEW_SUMMARY.md).
