@@ -1,0 +1,134 @@
+<div class="astronauts-container">
+  <div class="header">
+    <h1>Astronauts</h1>
+    <p>Browse and search astronaut personnel records</p>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading astronauts...</p>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <div class="error-icon">!</div>
+    <h3>Error Loading Astronauts</h3>
+    <p>{{ error }}</p>
+    <button (click)="loadAstronauts()" class="retry-button">Try Again</button>
+  </div>
+
+  <div class="astronauts-grid" *ngIf="!loading && !error">
+    <!-- Existing Astronaut Cards -->
+    <div *ngFor="let astronaut of astronauts" class="astronaut-card">
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="avatar"></div>
+        <div>
+          <h3 class="name">{{ astronaut.name }}</h3>
+          <p class="rank" *ngIf="astronaut.currentRank">{{ astronaut.currentRank }}</p>
+        </div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="card-content">
+        <div class="info-item" *ngIf="astronaut.currentDutyTitle">
+          <strong class="label">Current Duty:</strong>
+          <span class="value">{{ astronaut.currentDutyTitle }}</span>
+        </div>
+        <div class="info-item" *ngIf="astronaut.careerStartDate">
+          <strong class="label">Career Start:</strong>
+          <span class="value">{{ astronaut.careerStartDate | date : 'MMM yyyy' }}</span>
+        </div>
+        <div class="info-item" *ngIf="astronaut.careerEndDate">
+          <strong class="label">Career End:</strong>
+          <span class="value">{{ astronaut.careerEndDate | date : 'MMM yyyy' }}</span>
+        </div>
+
+        <!-- Show message when no data is available -->
+        <div
+          class="no-data"
+          *ngIf="
+            !astronaut.currentDutyTitle && !astronaut.careerStartDate && !astronaut.careerEndDate
+          "
+        >
+          No additional details available
+        </div>
+      </div>
+
+      <!-- Card Footer - Sticky to bottom -->
+      <div class="card-footer">
+        <a [routerLink]="['/astronaut', astronaut.name]" class="view-details-button">
+          View Details
+        </a>
+      </div>
+    </div>
+
+    <!-- Add New Astronaut Card -->
+    <button class="astronaut-card add-astronaut-card" (click)="openAddModal()">
+      <div class="add-icon">➕</div>
+      <h3>Add New Astronaut</h3>
+      <p>Create a new astronaut record</p>
+    </button>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && !error && astronauts.length === 0">
+    <div class="empty-icon"></div>
+    <h3>No Astronauts Found</h3>
+    <p>No astronaut records are currently available.</p>
+  </div>
+
+  <!-- Add Astronaut Modal -->
+  <div class="modal-overlay" *ngIf="showAddModal" (click)="closeAddModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" [formGroup]="addForm">
+      <div class="modal-header">
+        <h2>Add New Astronaut</h2>
+        <button class="close-button" (click)="closeAddModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Astronaut Name *</label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Enter astronaut name"
+            class="form-input"
+            [class.error]="addForm.get('name')?.invalid && addForm.get('name')?.touched"
+          />
+          <div
+            class="error-message"
+            *ngIf="addForm.get('name')?.hasError('required') && addForm.get('name')?.touched"
+          >
+            Name is required
+          </div>
+        </div>
+
+        <div class="info-note">
+          <p>
+            <strong>Note:</strong> Additional details like rank, duty title, and career dates can be
+            added after creating the astronaut by editing their profile.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="closeAddModal()"
+          class="cancel-button"
+          [disabled]="submitting"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          (click)="onSubmitAdd()"
+          class="save-button"
+          [disabled]="addForm.invalid || submitting"
+        >
+          <span *ngIf="!submitting">💾 Create Astronaut</span>
+          <span *ngIf="submitting">⏳ Creating...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

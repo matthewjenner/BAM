@@ -1,0 +1,135 @@
+<div class="astronaut-detail-container">
+  <div class="header">
+    <a routerLink="/astronauts" class="back-link">Back to Astronauts</a>
+    <h1>Astronaut Details</h1>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading astronaut details...</p>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <div class="error-icon">!</div>
+    <h3>Error Loading Details</h3>
+    <p>{{ error }}</p>
+    <button (click)="loadAstronautDetails(astronautName)" class="retry-button">Try Again</button>
+  </div>
+
+  <div class="astronaut-profile" *ngIf="!loading && !error && astronaut">
+    <div class="profile-header">
+      <div class="avatar"></div>
+      <div class="profile-info">
+        <h2 class="name">{{ astronaut.name }}</h2>
+        <p class="rank" *ngIf="astronaut.currentRank">{{ astronaut.currentRank }}</p>
+      </div>
+      <div class="profile-actions">
+        <button *ngIf="!isEditing" (click)="startEdit()" class="edit-button">Edit Details</button>
+      </div>
+    </div>
+
+    <!-- View Mode -->
+    <div class="profile-details" *ngIf="!isEditing">
+      <div class="detail-item" *ngIf="astronaut.currentDutyTitle">
+        <h4>Current Duty</h4>
+        <p>{{ astronaut.currentDutyTitle }}</p>
+      </div>
+      <div class="detail-item" *ngIf="astronaut.careerStartDate">
+        <h4>Career Start</h4>
+        <p>{{ astronaut.careerStartDate | date : 'MMMM yyyy' }}</p>
+      </div>
+      <div class="detail-item" *ngIf="astronaut.careerEndDate">
+        <h4>Career End</h4>
+        <p>{{ astronaut.careerEndDate | date : 'MMMM yyyy' }}</p>
+      </div>
+    </div>
+
+    <!-- Edit Mode -->
+    <div class="edit-form" *ngIf="isEditing" [formGroup]="editForm">
+      <h3 class="edit-title">Edit Astronaut Details</h3>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Name</label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Enter astronaut name"
+            class="form-input"
+            [class.error]="editForm.get('name')?.invalid && editForm.get('name')?.touched"
+          />
+          <div
+            class="error-message"
+            *ngIf="editForm.get('name')?.hasError('required') && editForm.get('name')?.touched"
+          >
+            Name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Current Rank</label>
+          <select formControlName="currentRank" class="form-input">
+            <option value="">Select a rank</option>
+            <option *ngFor="let rank of rankOptions" [value]="rank.value">
+              {{ rank.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Career Start Date</label>
+          <input type="date" formControlName="careerStartDate" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label>Career End Date</label>
+          <input type="date" formControlName="careerEndDate" class="form-input" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="cancelEdit()" class="cancel-button" [disabled]="submitting">
+          Cancel
+        </button>
+        <button
+          type="button"
+          (click)="saveEdit()"
+          class="save-button"
+          [disabled]="editForm.invalid || submitting"
+        >
+          <span *ngIf="!submitting">Save Changes</span>
+          <span *ngIf="submitting">Saving...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="duty-history" *ngIf="!loading && !error && duties && duties.length > 0">
+    <h3>Duty History</h3>
+    <div class="duty-timeline">
+      <div *ngFor="let duty of duties; let i = index" class="duty-item">
+        <div class="duty-content">
+          <div class="duty-header">
+            <h4 class="duty-title">{{ duty.dutyTitle }}</h4>
+            <span class="duty-rank">{{ duty.rank }}</span>
+          </div>
+          <div class="duty-dates">
+            <span>{{ duty.dutyStartDate | date : 'MMM yyyy' }}</span>
+            <span *ngIf="duty.dutyEndDate"> - {{ duty.dutyEndDate | date : 'MMM yyyy' }}</span>
+            <span *ngIf="!duty.dutyEndDate" class="current">(Current)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-data-state" *ngIf="!loading && !error && !astronaut">
+    <div class="no-data-icon"></div>
+    <h3>No Astronaut Details Found</h3>
+    <p>
+      No detailed information is available for {{ astronautName }}. This astronaut may not have any
+      assigned duties yet.
+    </p>
+    <a routerLink="/astronauts" class="back-button">Back to Astronauts</a>
+  </div>
+</div>

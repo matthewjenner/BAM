@@ -1,0 +1,155 @@
+:root {
+  --primary-color: #1e3a8a;
+  --primary-light: #3b82f6;
+  --primary-dark: #1e40af;
+  --secondary-color: #f59e0b;
+  --accent-color: #10b981;
+  --warn-color: #ef4444;
+  --background-color: #f8fafc;
+  --surface-color: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+/* Material Design Customization */
+.mat-mdc-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.mat-mdc-button.mat-primary {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.mat-mdc-button.mat-accent {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+.mat-mdc-button.mat-warn {
+  background-color: var(--warn-color) !important;
+  color: white !important;
+}
+
+/* Custom Components */
+.astronaut-card {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+}
+
+.duty-timeline {
+  position: relative;
+}
+
+.duty-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.status-retired {
+  background-color: var(--warn-color);
+  color: white;
+}
+
+.status-inactive {
+  background-color: var(--text-secondary);
+  color: white;
+}
+
+/* Loading Spinner */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .astronaut-card {
+    padding: 16px;
+    margin: 8px 0;
+  }
+
+  .duty-timeline {
+    padding-left: 16px;
+  }
+
+  .duty-item {
+    padding-left: 16px;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,102 @@
+<div class="duties-container">
+  <div class="duties-header">
+    <h1 class="duties-title">Manage Duties</h1>
+    <p class="duties-subtitle">Assign new duties to astronauts</p>
+  </div>
+
+  <div class="duties-form">
+    <form [formGroup]="dutyForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div>
+          <label class="form-label">Astronaut Name</label>
+          <select
+            formControlName="name"
+            class="form-select"
+            [class.error]="dutyForm.get('name')?.invalid && dutyForm.get('name')?.touched"
+            [disabled]="loading"
+          >
+            <option value="" disabled>
+              {{ loading ? 'Loading astronauts...' : 'Select an astronaut' }}
+            </option>
+            <option *ngFor="let astronaut of astronauts" [value]="astronaut.name">
+              {{ astronaut.name }}
+            </option>
+          </select>
+          <div
+            class="form-error"
+            *ngIf="dutyForm.get('name')?.hasError('required') && dutyForm.get('name')?.touched"
+          >
+            Name is required
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Rank</label>
+          <select
+            formControlName="rank"
+            class="form-select"
+            [class.error]="dutyForm.get('rank')?.invalid && dutyForm.get('rank')?.touched"
+          >
+            <option value="" disabled>Select a rank</option>
+            <option *ngFor="let rank of rankOptions" [value]="rank.value">
+              {{ rank.label }}
+            </option>
+          </select>
+          <div
+            class="form-error"
+            *ngIf="dutyForm.get('rank')?.hasError('required') && dutyForm.get('rank')?.touched"
+          >
+            Rank is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Duty Title</label>
+        <input
+          type="text"
+          formControlName="dutyTitle"
+          placeholder="Enter duty title"
+          class="form-input"
+          [class.error]="dutyForm.get('dutyTitle')?.invalid && dutyForm.get('dutyTitle')?.touched"
+        />
+        <div
+          class="form-error"
+          *ngIf="
+            dutyForm.get('dutyTitle')?.hasError('required') && dutyForm.get('dutyTitle')?.touched
+          "
+        >
+          Duty title is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Duty Start Date</label>
+        <input
+          type="date"
+          formControlName="dutyStartDate"
+          class="form-input"
+          [class.error]="
+            dutyForm.get('dutyStartDate')?.invalid && dutyForm.get('dutyStartDate')?.touched
+          "
+        />
+        <div
+          class="form-error"
+          *ngIf="
+            dutyForm.get('dutyStartDate')?.hasError('required') &&
+            dutyForm.get('dutyStartDate')?.touched
+          "
+        >
+          Start date is required
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="dutyForm.invalid || submitting" class="submit-button">
+          <span *ngIf="!submitting">Create Duty Assignment</span>
+          <span *ngIf="submitting">Creating...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

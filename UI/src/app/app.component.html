@@ -1,0 +1,28 @@
+<div style="background: #1e3a8a; color: white; padding: 16px; text-align: center">
+  <h1>Stargate ACTS</h1>
+  <nav style="margin-top: 16px">
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      style="color: white; margin: 0 16px; text-decoration: none"
+      >Home</a
+    >
+    <a
+      routerLink="/astronauts"
+      routerLinkActive="active"
+      style="color: white; margin: 0 16px; text-decoration: none"
+      >Astronauts</a
+    >
+    <a
+      routerLink="/duties"
+      routerLinkActive="active"
+      style="color: white; margin: 0 16px; text-decoration: none"
+      >Duties</a
+    >
+  </nav>
+</div>
+
+<main style="padding: 24px; min-height: calc(100vh - 100px); background: #f8fafc">
+  <router-outlet></router-outlet>
+</main>
